@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>蜀宴·川菜集 | 潮酷山城点菜单</title>
+    <!-- 现代字体 + 复古山城 vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 全新配色：川渝红油底+青石板复古，但更年轻潮酷 —— 主色深褐红+辣椒橙+竹绿撞色 */
+            background: #FEF7F0;
+            background-image: radial-gradient(circle at 10% 20%, rgba(235, 85, 45, 0.03) 0%, rgba(255, 190, 110, 0.02) 100%);
+            font-family: 'Space Grotesk', 'Noto Serif SC', sans-serif;
+            color: #2A2418;
+            padding: 0;
+        }
+
+        /* 复古时尚卷轴感 */
+        .menu-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.8rem 2rem 3rem;
+        }
+
+        /* ========= 山城 / 熊猫 / 方言特色头部 ========= */
+        .hero {
+            background: linear-gradient(135deg, #FF4D1E 0%, #E63917 100%);
+            border-radius: 2.5rem;
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2.8rem;
+            box-shadow: 0 20px 35px -12px rgba(230, 57, 23, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "🐼  🔥  🥢";
+            font-size: 8rem;
+            position: absolute;
+            bottom: -25px;
+            right: -20px;
+            opacity: 0.12;
+            pointer-events: none;
+            font-family: monospace;
+        }
+        .hero::after {
+            content: "🌶️ 巴适得板 🌶️";
+            position: absolute;
+            bottom: 15px;
+            left: 30px;
+            font-size: 0.9rem;
+            background: rgba(255,255,200,0.2);
+            backdrop-filter: blur(6px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            color: #FFF7E8;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 4px 4px 0 #9B2A0E;
+            letter-spacing: -0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero h1 i {
+            font-size: 2.8rem;
+            filter: drop-shadow(2px 2px 0 #9B2A0E);
+        }
+        .dialogue-badge {
+            background: #FFDD99;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #B13E1C;
+            font-size: 0.9rem;
+        }
+        .hero-sub {
+            display: flex;
+            gap: 1.2rem;
+            color: #FFE2C6;
+            margin-top: 1rem;
+            font-weight: 500;
+            flex-wrap: wrap;
+        }
+        .hero-sub span i {
+            margin-right: 6px;
+        }
+
+        /* 网红分类选项卡 - 年轻化 磨砂玻璃+红晕 */
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.9rem;
+            margin-bottom: 3rem;
+            background: rgba(255, 245, 235, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 1.2rem;
+            border-radius: 80px;
+            position: sticky;
+            top: 15px;
+            z-index: 50;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+        }
+        .cat-btn {
+            background: rgba(255,255,245,0.85);
+            border: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.65rem 1.6rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            color: #6E3B27;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .cat-btn i {
+            font-size: 1rem;
+        }
+        .cat-btn.active {
+            background: #E63E1A;
+            color: white;
+            box-shadow: 0 10px 20px -8px #E63E1A;
+            transform: scale(1.02);
+        }
+        .cat-btn:hover:not(.active) {
+            background: #FFEDE0;
+            color: #C73D1A;
+            transform: translateY(-2px);
+        }
+
+        /* 菜品网格 —— 赛博烟火气 */
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        /* 卡片设计：大圆角 + 川西民居窗格元素 */
+        .dish-card {
+            background: #FFFFFFE6;
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+            border: 1px solid rgba(230, 62, 26, 0.2);
+            box-shadow: 0 12px 28px -12px rgba(0,0,0,0.12);
+            position: relative;
+        }
+        .dish-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: #FF7542;
+            box-shadow: 0 28px 38px -16px rgba(230, 62, 26, 0.28);
+        }
+        /* 图片区域 + 装饰熊猫logo */
+        .dish-img {
+            width: 100%;
+            height: 210px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .dish-img::after {
+            content: "🐼";
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            font-size: 1.7rem;
+            opacity: 0.7;
+            text-shadow: 0 2px 5px black;
+        }
+        .dish-category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #2A2418CC;
+            backdrop-filter: blur(8px);
+            color: #FFDAB9;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+        }
+        .dish-info {
+            padding: 1.3rem 1.2rem 1.4rem;
+        }
+        .dish-name {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+        }
+        .dish-name span:first-child {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(130deg, #C53A1A, #E6702C);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .price-tag {
+            background: #FEE2C2;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #C23D18;
+        }
+        .dish-brief {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0 6px;
+        }
+        .dish-brief span {
+            background: #FFF1E6;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            color: #A4532C;
+        }
+        .dish-desc {
+            font-size: 0.85rem;
+            color: #6A4A2E;
+            line-height: 1.35;
+            margin-top: 0.7rem;
+            border-top: 1px dashed #FFCEA5;
+            padding-top: 0.7rem;
+            font-weight: 500;
+        }
+        /* 味型高亮火焰 */
+        .taste-highlight {
+            background: #FFE1B9;
+            display: inline-block;
+            padding: 0 0.4rem;
+            border-radius: 12px;
+            color: #C73A1A;
+            font-weight: 700;
+        }
+
+        /* 模态框 川渝元素更浓 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .modal-card {
+            max-width: 550px;
+            width: 100%;
+            background: #FFFBF5;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 35px 50px rgba(0,0,0,0.4);
+            border: 1px solid #FFAE7A;
+            animation: modalpop 0.3s ease;
+        }
+        @keyframes modalpop {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-img {
+            width: 100%;
+            height: 230px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .modal-img:after {
+            content: "🌶️ 地道川味";
+            position: absolute;
+            bottom: 12px;
+            left: 16px;
+            background: #00000077;
+            backdrop-filter: blur(3px);
+            color: #FFE3B9;
+            padding: 0.2rem 0.9rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .modal-content {
+            padding: 1.6rem 1.8rem;
+        }
+        .modal-content h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #DC3C18;
+            border-left: 6px solid #FF7F3F;
+            padding-left: 1rem;
+        }
+        .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 1rem 0 1.2rem;
+        }
+        .modal-meta .badge {
+            background: #F5E2D2;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #9C4A2A;
+        }
+        .detail-section {
+            margin: 1rem 0;
+            background: #FFF3EA;
+            padding: 0.8rem 1rem;
+            border-radius: 1.2rem;
+        }
+        .detail-section strong {
+            color: #C2410C;
+            font-weight: 800;
+            display: inline-block;
+            min-width: 70px;
+        }
+        .close-modal {
+            background: #E6502A;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0.8rem;
+            border-radius: 60px;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: 0.2s;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .close-modal:hover {
+            background: #BC3412;
+        }
+        .footer-tip {
+            text-align: center;
+            margin-top: 3rem;
+            background: #FFE9DD;
+            padding: 1rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #C2512A;
+            font-weight: 500;
+        }
+        @media (max-width: 650px) {
+            .menu-container { padding: 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .cat-btn { padding: 0.5rem 1rem; font-size: 0.8rem;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <div class="hero">
+        <div class="hero-top">
+            <h1>
+                <i class="fas fa-pepper-hot"></i> 蜀宴·川菜集
+            </h1>
+            <div class="dialogue-badge">
+                <i class="fas fa-comment-dots"></i> 老板，点单咯！
+            </div>
+        </div>
+        <div class="hero-sub">
+            <span><i class="fas fa-map-marker-alt"></i> 重庆·解放碑 | 成都·太古里</span>
+            <span><i class="fas fa-fire"></i> 热辣红油·熊猫可爱</span>
+            <span><i class="fas fa-chopsticks"></i> 巴适得板，安逸得很</span>
+        </div>
+    </div>
+
+    <!-- 分类动态栏 -->
+    <div class="category-tabs" id="categoryTabs"></div>
+
+    <!-- 菜品网格区域 -->
+    <div id="dishesGrid" class="dishes-grid">
+        <div style="grid-column:1/-1; text-align:center; padding:3rem;">🔥 加载地道川味ing ...</div>
+    </div>
+    <div class="footer-tip">
+        <i class="fas fa-hand-peace"></i> 点击任意菜品卡片，查看主料、配料、味型 | 图片请放 /images/ 文件夹 | 数据配置于 /data/menu.json 可随意替换
+    </div>
+</div>
+
+<!-- 模态框 -->
+<div id="detailModal" class="modal">
+    <div class="modal-card">
+        <div class="modal-img" id="modalImg"></div>
+        <div class="modal-content">
+            <h2 id="modalName"></h2>
+            <div class="modal-meta" id="modalMeta"></div>
+            <div class="detail-section">
+                <strong>🥩 主料：</strong> <span id="modalMain"></span>
+            </div>
+            <div class="detail-section">
+                <strong>🧅 配料：</strong> <span id="modalIngredients"></span>
+            </div>
+            <div class="detail-section">
+                <strong>🌶️ 味型：</strong> <span id="modalTaste" style="font-weight:800;color:#D93F1A;"></span>
+            </div>
+            <div class="detail-section">
+                <strong>📖 川味故事：</strong> <span id="modalFullDesc"></span>
+            </div>
+            <button class="close-modal" id="closeModalBtn">晓得咯，关掉 <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 分类映射 —— 更有川渝特色命名
+    const CATEGORIES = [
+        { id: "all", name: "🔥 全 部", icon: "fa-utensils" },
+        { id: "specialty", name: "✨ 镇店特色", icon: "fa-crown" },
+        { id: "hot", name: "🌶️ 热辣硬菜", icon: "fa-dragon" },
+        { id: "cold", name: "🥒 爽口凉菜", icon: "fa-leaf" },
+        { id: "soup", name: "🥣 煨汤砂锅", icon: "fa-temperature-high" },
+        { id: "stew", name: "🐖 慢炖耙糯", icon: "fa-clock" }
+    ];
+
+    let menuData = [];
+    let currentCategory = "all";
+
+    // 辅助分类名称
+    function getCategoryDisplay(catId) {
+        const found = CATEGORIES.find(c => c.id === catId);
+        return found ? found.name : catId;
+    }
+
+    // 渲染分类标签 (网红风)
+    function renderTabs() {
+        const container = document.getElementById("categoryTabs");
+        if (!container) return;
+        container.innerHTML = "";
+        CATEGORIES.forEach(cat => {
+            const btn = document.createElement("button");
+            btn.className = `cat-btn ${currentCategory === cat.id ? 'active' : ''}`;
+            btn.innerHTML = `<i class="fas ${cat.icon}"></i> ${cat.name}`;
+            btn.addEventListener("click", () => {
+                currentCategory = cat.id;
+                renderTabs();
+                renderDishes();
+            });
+            container.appendChild(btn);
+        });
+    }
+
+    // 根据分类筛选
+    function filterDishes() {
+        if (currentCategory === "all") return menuData;
+        return menuData.filter(dish => dish.category === currentCategory);
+    }
+
+    // 渲染卡片 增强川渝方言小点缀
+    function renderDishes() {
+        const grid = document.getElementById("dishesGrid");
+        if (!grid) return;
+        const filtered = filterDishes();
+        if (!filtered.length) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; background:#FFF3EA; border-radius:2rem;">
+                                <i class="fas fa-hotdog" style="font-size:2.5rem; color:#E65C2E;"></i>
+                                <p style="margin-top:1rem; font-weight:500;">莫得这个分类的菜，老板快喊后厨加菜！ 🐼</p>
+                              </div>`;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(dish => {
+            const imgPath = dish.image ? `images/${dish.image}` : 'https://placehold.co/600x400?text=川味+江湖';
+            const mainShort = dish.mainMaterial ? dish.mainMaterial.substring(0, 22) : '神秘山椒';
+            const tasteShort = dish.tasteType || '麻辣鲜香';
+            // 随机添加四川方言点缀，更显亲切
+            const localPhrase = ["安逸！","巴适得板","好辣好喜欢","再来一碗","绝绝子","霸道"];
+            const randomWord = localPhrase[Math.floor(Math.random() * localPhrase.length)];
+            return `
+                <div class="dish-card" data-id="${dish.id}">
+                    <div class="dish-img" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05)), url('${imgPath}'); background-size: cover;">
+                        <div class="dish-category-badge">${getCategoryDisplay(dish.category)}</div>
+                    </div>
+                    <div class="dish-info">
+                        <div class="dish-name">
+                            <span>${dish.name}</span>
+                            ${dish.price ? `<span class="price-tag">¥${dish.price}</span>` : ''}
+                        </div>
+                        <div class="dish-brief">
+                            <span><i class="fas fa-drumstick-bite"></i> ${mainShort}</span>
+                            <span><i class="fas fa-pepper-hot"></i> ${tasteShort}</span>
+                            <span><i class="fas fa-heart" style="color:#E63E1A;"></i> ${randomWord}</span>
+                        </div>
+                        <div class="dish-desc">
+                            ${dish.shortDesc || (dish.desc ? dish.desc.slice(0, 55) + '…' : '🍚 点击卡片揭开详细川味秘籍')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // 绑定点击事件（点触详细介绍）
+        document.querySelectorAll('.dish-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const dishId = parseInt(card.getAttribute('data-id'));
+                const dish = menuData.find(d => d.id === dishId);
+                if (dish) openModal(dish);
+            });
+        });
+    }
+
+    // 打开模态框 展示主料/配料/味型等
+    function openModal(dish) {
+        const modal = document.getElementById("detailModal");
+        if (!modal) return;
+        const imgPath = dish.image ? `images/${dish.image}` : 'https://placehold.co/600x400?text=川渝+雄起';
+        const modalImgDiv = document.getElementById("modalImg");
+        modalImgDiv.style.backgroundImage = `linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.1)), url('${imgPath}')`;
+        modalImgDiv.style.backgroundSize = "cover";
+        modalImgDiv.style.backgroundPosition = "center";
+        
+        document.getElementById("modalName").innerText = dish.name;
+        // 展示分类和额外信息
+        let spiceIcon = dish.spiceLevel ? dish.spiceLevel : (dish.tasteType?.includes('麻辣') ? '🌶️🌶️🌶️' : '🌶️🌶️');
+        document.getElementById("modalMeta").innerHTML = `
+            <span class="badge"><i class="fas fa-tag"></i> ${getCategoryDisplay(dish.category)}</span>
+            ${dish.price ? `<span class="badge"><i class="fas fa-coins"></i> ${dish.price} 元</span>` : ''}
+            <span class="badge"><i class="fas fa-temperature-high"></i> ${spiceIcon}</span>
+        `;
+        document.getElementById("modalMain").innerText = dish.mainMaterial || "川蜀地道食材，新鲜採購";
+        document.getElementById("modalIngredients").innerText = dish.ingredients || dish.accessories || "姜蒜花椒、秘制豆瓣、灵魂红油";
+        document.getElementById("modalTaste").innerHTML = dish.tasteType || "麻辣/糊辣/酸辣/家常，层次霸道";
+        const fullDesc = dish.fullDesc || dish.desc || `${dish.name}是川渝地区经典代表作，融合了麻、辣、鲜、香，一口入魂，老板强烈推荐。`;
+        document.getElementById("modalFullDesc").innerHTML = fullDesc + " 🔥 来都来了，吃完再减肥嘛～";
+        
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        const modal = document.getElementById("detailModal");
+        if (modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "";
+        }
+    }
+
+    // 加载外部json数据（菜品文字介绍完全独立于html，方便后期更换）
+    async function loadMenuData() {
+        try {
+            const response = await fetch('data/menu.json');
+            if (!response.ok) throw new Error(`未找到data/menu.json`);
+            const data = await response.json();
+            if (Array.isArray(data) && data.length) {
+                menuData = data;
+            } else throw new Error("数据格式不对");
+        } catch (err) {
+            console.warn("⚠️ 未加载到自定义数据，展示内置川渝宝藏菜单。请创建 data/menu.json 并提供菜品信息（文本外部化）", err);
+            menuData = getClassicChuanYuMenu();  // 经典菜单且完全包含主料配料味型介绍
+        }
+        // 确保每个菜品有唯一id
+        menuData = menuData.map((item, idx) => {
+            if (!item.id) item.id = idx + 100;
+            return item;
+        });
+        renderTabs();
+        renderDishes();
+    }
+
+    // 极具川渝特色的默认菜单（超详细符合所有要求：特色、热凉汤炖齐全，主料配料味型全）
+    function getClassicChuanYuMenu() {
+        return [
+            { id:1, name:"重庆老火锅毛肚", category:"specialty", price:89, image:"maodu.jpg", mainMaterial:"水牛毛肚、牛油底料", ingredients:"干辣椒、花椒、蒜泥、香油", tasteType:"醇厚牛油麻辣", shortDesc:"七上八下，脆爽过瘾", fullDesc:"重庆火锅头牌，屠场直供毛肚，涮烫10秒，裹满蒜泥香油，脆嫩化渣。" },
+            { id:2, name:"歌乐山辣子鸡", category:"specialty", price:68, image:"laziji.jpg", mainMaterial:"土鸡腿肉、二荆条干辣椒", ingredients:"茂汶花椒、姜片、芝麻", tasteType:"干香麻辣", shortDesc:"辣椒堆里寻宝，酥香焦脆", fullDesc:"重庆歌乐山名菜，鸡肉丁炸至金黄酥脆，与辣椒花椒爆炒，麻辣干香，下酒绝配。" },
+            { id:3, name:"鲜椒过水鱼", category:"hot", price:78, image:"guoshuiyu.jpg", mainMaterial:"草鱼1条、青红小米辣", ingredients:"鲜青花椒、姜蒜末、葱花", tasteType:"鲜辣清香", shortDesc:"鱼嫩如豆腐，鲜椒提味", fullDesc:"川南自贡风味，鱼煮至断生，淋上大量鲜椒与青花椒油，辣而不燥，鱼肉鲜嫩。" },
+            { id:4, name:"毛血旺全家福", category:"hot", price:79, image:"maoxuewang.jpg", mainMaterial:"鸭血、毛肚、黄喉、午餐肉", ingredients:"豆芽、火锅底料、刀口辣椒", tasteType:"麻辣滚烫", shortDesc:"地道江湖，红油汪洋", fullDesc:"磁器口三宝之一，鸭血嫩滑，麻辣鲜香层次丰富，热油浇淋瞬间烟火气满格。" },
+            { id:5, name:"口水鸡", category:"cold", price:42, image:"koushuiji.jpg", mainMaterial:"土鸡腿、花生碎", ingredients:"复制酱油、红油、芝麻", tasteType:"红油麻辣微甜", shortDesc:"集麻辣鲜香嫩爽于一身", fullDesc:"川式凉菜头牌，鸡肉嫩滑，红油透亮，佐以花生碎，光是看着就流口水。" },
+            { id:6, name:"烧椒皮蛋", category:"cold", price:28, image:"shaojiao.jpg", mainMaterial:"松花皮蛋、青椒", ingredients:"烧椒、蒜末、陈醋", tasteType:"糊辣酸香", shortDesc:"烧椒独特焦香", fullDesc:"四川特色烧椒与皮蛋碰撞，擂椒过后椒香四溢，酸辣开胃，极为解腻。" },
+            { id:7, name:"酸菜乌鱼花", category:"soup", price:69, image:"suancaiyu.jpg", mainMaterial:"乌鱼片、老坛酸菜", ingredients:"泡萝卜、野山椒、葱姜", tasteType:"酸辣爽口", shortDesc:"鱼片成花，汤醇开胃", fullDesc:"老坛酸菜熬制汤底，乌鱼片刀工精致，浸满酸辣汤汁，冬日暖身极品。" },
+            { id:8, name:"翘脚牛肉汤锅", category:"soup", price:88, image:"qiaojiao.jpg", mainMaterial:"牛杂、牛棒骨、莲白", ingredients:"白芷、胡椒、香菜", tasteType:"咸鲜药膳", shortDesc:"乐山名吃，汤清味厚", fullDesc:"乐山非物质文化遗产，牛骨熬煮8小时，蘸干辣椒面吃，牛肉软烂，汤底鲜掉眉毛。" },
+            { id:9, name:"老妈蹄花炖芸豆", category:"stew", price:62, image:"tihua.jpg", mainMaterial:"猪前蹄、白芸豆", ingredients:"姜片、花椒、当归", tasteType:"软糯咸鲜", shortDesc:"胶原满满，奶白浓汤", fullDesc:"成都夜宵顶流，蹄花炖到脱骨，蘸红油酱汁，肥而不腻，入口即化。" },
+            { id:10, name:"川味粉蒸排骨", category:"stew", price:56, image:"fenzheng.jpg", mainMaterial:"猪肋排、米粉", ingredients:"红薯、豆瓣酱、花椒粉", tasteType:"咸鲜微辣", shortDesc:"粑糯入味，肉香四溢", fullDesc:"传统川东蒸菜，排骨裹米粉蒸至酥烂，垫底红薯吸饱肉汁，耙糯回甘。" }
+                   ];
+    }
+
+    // 模态关闭事件
+    function bindEvents() {
+        const closeBtn = document.getElementById("closeModalBtn");
+        const modal = document.getElementById("detailModal");
+        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape" && modal && modal.style.display === "flex") closeModal(); });
+    }
+
+    function init() {
+        bindEvents();
+        loadMenuData();
+    }
+    init();
+</script>
+</body>
+</html>
